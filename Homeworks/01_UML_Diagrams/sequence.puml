@@ -1,0 +1,128 @@
+@startuml sequence
+title Sequence Diagramm - Paket Tracking App 
+
+actor DeliveryPerson as "Zusteller"
+entity Scanner as "Scanner Handgerät"
+entity Navi as "Navigations-System"
+entity DeliveryServer as "Leiferungs Managment Server"
+database PackageDb as "Paket-Datenbank"
+entity AppServer as "App Server"
+database UserDb as "App User Datenbank"
+entity UserApp as "User App"
+actor User as "User"
+
+== Vor Abfahrt ==
+DeliveryPerson -> Scanner: Paket bei Ladung scannen
+    activate Scanner
+
+Scanner -> DeliveryServer: Paket als Teil von Tour markiert 
+    deactivate Scanner
+    activate DeliveryServer
+
+DeliveryServer -> PackageDb: Paket Status aktualisieren
+    activate PackageDb
+DeliveryServer -> PackageDb: get Zielort 
+PackageDb --> DeliveryServer: Zielort
+DeliveryServer --> Navi: Zielort einspeichern
+    activate Navi
+    deactivate Navi
+    deactivate DeliveryServer
+PackageDb -> AppServer: Aktualisierungen übermitteln
+    deactivate PackageDb
+    activate AppServer
+   
+AppServer -> UserDb: get User
+        activate UserDb
+UserDb --> AppServer: user
+        deactivate UserDb
+
+opt "Empfänger nutzt App"
+    AppServer -> UserApp: Lieferungsinfo aktualisieren
+        deactivate AppServer
+        activate UserApp
+    UserApp -> User: Notification Paket auf dem Weg
+        deactivate UserApp
+end 
+
+== Während Tour ==
+DeliveryPerson -> Scanner: Paket als geliefert scannen
+    activate Scanner
+Scanner -> Navi: get Standort
+    activate Navi
+Scanner <-- Navi: Standort
+    deactivate Navi
+
+alt "Standort & Zielort nicht übereinstimmend"
+    Scanner --> DeliveryPerson: Notification Fehler
+    Scanner -> DeliveryServer: Fehler melden
+        activate DeliveryServer
+    DeliveryServer -> PackageDb: Paket Status aktualisieren
+            deactivate DeliveryServer
+            activate PackageDb
+    PackageDb -> AppServer: Aktualisierungen übermitteln
+                deactivate PackageDb
+                activate AppServer
+      AppServer -> UserDb: get User
+                activate UserDb
+            UserDb --> AppServer: user
+                deactivate UserDb
+
+        opt "Empfänger nutzt App"
+            AppServer -> UserApp: Lieferungsinfo aktualisieren
+                deactivate AppServer
+                activate UserApp
+            UserApp -> User: Notification Lieferung fehlgeschlagen
+                deactivate UserApp
+        end 
+
+
+    else "Standort & Zielort übereinstimmend"
+        Scanner -> DeliveryServer: Paket als geliefert markieren
+            activate DeliveryServer
+        Navi <-- DeliveryServer: neue Route
+            activate Navi
+
+        DeliveryPerson <-- Scanner: Notification Erfolg
+            deactivate Scanner
+        DeliveryPerson <-- Navi: Notification Nächstes Ziel
+            deactivate Navi
+
+        DeliveryServer -> PackageDb:Paket Status aktualisieren
+            deactivate DeliveryServer
+            activate PackageDb
+        PackageDb -> AppServer: Aktualisierungen übermitteln
+        deactivate PackageDb
+        activate AppServer
+
+     
+
+        AppServer -> UserDb: get User
+            activate UserDb
+        UserDb --> AppServer: user
+            deactivate UserDb
+
+    opt "Empfänger nutzt App"
+        AppServer -> UserApp: Lieferungsinfo aktualisieren
+            activate UserApp
+        UserApp -> User: Notification Leiferung erfolgt
+                deactivate UserApp
+    end 
+
+    AppServer -> UserDb: get betroffene User
+                activate UserDb
+    UserDb --> AppServer: alle User mit Pakete auf dieser Tour
+            deactivate UserDb
+
+    opt "Weitere Empfänger sind Appnutzer"
+            AppServer -> UserApp: Paket Standort aktualisieren
+            activate UserApp
+            AppServer -> UserApp: Schätzung Lieferzeitpunkt aktualisieren
+                deactivate AppServer
+            UserApp -> User: Notification Neue Informationen
+            deactivate UserApp
+    end
+end
+
+
+
+@enduml

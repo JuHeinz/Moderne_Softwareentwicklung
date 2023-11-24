@@ -1,0 +1,49 @@
+@startuml deployment
+
+title Deployment Diagramm - Paket Tracking App
+
+node "Scanner-Handgerät" <<device>> as Scanner {
+    node "Scanner Betriebssystem" <<execution enviroment>> {
+        component "Package Scanner" <<artifact>>
+        component "Delivery Validator" <<artifact>>
+    }
+}
+node "Navigations-Sytem" <<device>> as Navi {
+    node "Navi Betriebssystem" <<execution enviroment>> {
+        component "Navigatior" <<artifact>>
+        component "GPS Location Provider" <<artifact>>
+    }
+}
+
+node "Delivery Server" <<device>> as DeliveryServer {
+    component "Paket Manager" <<artifact>>
+    component "Route Service" <<artifact>>
+    node "MySQL Server 2" <<database system>>{
+        database "Paket Datenbank" <<database>>
+    }
+
+}
+
+node "App Server" <<device>> as AppServer {
+    node "MySQL Server 1" <<database system>>{
+        database "User Datenbank" <<database>>
+    }
+
+    component "Web Server (NodeJS)" <<execution enviroment>>{
+        component "User Notifier" <<artifact>>
+        component "User Session" <<artifact>>
+    }
+}
+
+node "User Device" <<device>> as UserDevice {
+    node "Web Client" <<execution enviroment>> {
+        component "Front End (React)" <<artifact>>
+    }
+}
+
+UserDevice -- AppServer: <<HTTP>>
+Scanner -- DeliveryServer: <<Satellit>>
+AppServer -- DeliveryServer: <<HTTP>>
+Navi  --  Scanner: <<Bluetooth>>
+
+@enduml

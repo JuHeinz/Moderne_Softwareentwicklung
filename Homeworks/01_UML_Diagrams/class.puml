@@ -1,0 +1,129 @@
+@startuml class
+
+title Class Diagramm - Paket Tracking App
+
+package "DeliveryServer"{
+
+    class RouteService {
+    - int calculatedRoute
+    - {static} RouteService rs
+    - {static} List<Integer> destinations
+    - Navigator navigator
+    + {static} RouteService getInstance(Navigator)
+    + void addToDestinations(int)
+    + void recalculateRoute(int)
+    + void sendRouteToNavi()
+    }
+
+    class PackageRepository {
+        - UserNotifier userNotifier
+        - {static} PackageRepository pr
+        - ArrayList<Package> packagesSetAsLoadedInDatabase
+        + {static} PackageRepository getInstance(UserNotifier)
+        + int getDestination(Package)
+        + void updatePackageStatus(Package,Status)
+        - void log(String)
+    }
+
+    class PackageManager {
+        - PackageRepository packageRepository
+        - RouteService routeService
+        - {static} PackageManager pm
+        + {static} PackageManager getInstance(PackageRepository,RouteService)
+        + void setPackageLoaded(Package,LocalDateTime)
+        + void setPackageDelivered(Package,LocalDateTime)
+        + void setDeliveryFailure(Package)
+    }
+}
+
+package "AppServer"{
+    class UserNotifier {
+        - UserRepository userRepository
+        - {static} UserNotifier un
+        + {static} UserNotifier getInstance(UserRepository)
+        + void receiveUpdate(Package,Status,ArrayList<Package>)
+        - void getUserForPackage(Package)
+        - void notifyAllUsersOnTour(List<Package>)
+    }
+
+    class UserSession {
+        - AppUser user
+        - Package p
+        - LocalDateTime arrivalTime
+        - String vanLocation
+        - UI ui
+        + void updateLoaded()
+        + void updateFailure()
+        + void updateDelivered()
+        + void updateArrivalTime()
+        + void updateVanLocation()
+        - void log(String)
+    }
+
+    class UserRepository {
+        - {static} UserRepository ur
+        - {static} List<AppUser> allUsersInDB
+        + {static} UserRepository getInstance()
+        + AppUser getUserForPackage(Package)
+        - AppUser findByCode(Collection<AppUser>,int)
+    }
+
+}
+
+
+
+package "Scanner"{
+    class PackageScanner {
+        - PackageManager packageManager
+        - List<Package> loadedPackages
+        - {static} PackageScanner ps
+        + {static} PackageScanner getInstance(PackageManager)
+        + void scanPackageAsLoaded(int,LocalDateTime)
+        + void scanPackageAsDelivered(int,LocalDateTime)
+        - void locallySaveLoadedPackage(Package)
+        - {static} Package findByCode(Collection<Package>,int)
+        - void showNotification(String)
+    }
+
+    class DeliveryValidator {
+        + {static} boolean matchLocationDestination(int,int)
+    }
+
+}
+
+package "Navi"{
+    class Navi.GPS {
+        + {static} int getCurrentLocation()
+    }
+
+    class Navi.Navigator {
+        - {static} Navigator ng
+        - String route
+        + {static} Navigator getInstance()
+        + void setRoute(String)
+        - void showNotification(String)
+    }
+}
+
+package "UserApp"{
+    class UI {
+        + void sendNotification(String)
+    }
+}
+
+PackageScanner "1" ..> "1" PackageManager: uses
+PackageScanner "*" ..> "1" DeliveryValidator: uses
+
+PackageManager "1" ..> "1" PackageRepository: uses
+PackageRepository "1" ..> "1" UserNotifier: uses
+UserNotifier "1" ..>  "*" UserSession: creates
+UserNotifier "1"  ..> "1" UserRepository: uses
+
+UserSession "1" ..> "1" UI: creates
+
+PackageManager "1" ..> "1"  RouteService: uses
+RouteService "1" ..> "1" Navigator: uses
+RouteService "1" ..> "1" GPS: uses
+
+
+@enduml
