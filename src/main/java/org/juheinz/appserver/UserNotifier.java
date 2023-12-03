@@ -6,22 +6,29 @@ import org.juheinz.entities.Status;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Starts user sessions for a given parcel, its status and its user.
+ */
 public class UserNotifier {
 
     private UserRepository userRepository;
-    private static final UserNotifier userNotifier = new UserNotifier();
+    private static final UserNotifier USER_NOTIFIER = new UserNotifier();
 
     private UserNotifier() {
-        System.out.println("UserNotifier Singleton created");
     }
 
     public static UserNotifier getInstance(UserRepository userRepository) {
-        userNotifier.userRepository = userRepository;
-        return userNotifier;
+        USER_NOTIFIER.userRepository = userRepository;
+        return USER_NOTIFIER;
     }
 
 
-    //TODO: check if session for user already exists, if not start it
+    /**
+     * Creates UI according to packages status.
+     * @param parcel parcel entity that has changed.
+     * @param status status for parcel.
+     * @param packagesOnTour all parcels still in the van.
+     */
     public void receiveUpdate(Parcel parcel, Status status, ArrayList<Parcel> packagesOnTour) {
 
         getUserForParcel(parcel);
@@ -29,20 +36,20 @@ public class UserNotifier {
         switch (status) {
             case LOADED:
                 if (parcel.hasUser()) {
-                    UserSession session = new UserSession(parcel.getUser(), parcel);
+                    InterfaceController session = new InterfaceController(parcel.getUser(), parcel);
                     session.updateLoaded();
                 }
                 break;
             case DELIVERED:
                 notifyAllUsersOnTour(packagesOnTour);
                 if (parcel.hasUser()) {
-                    UserSession session = new UserSession(parcel.getUser(), parcel);
+                    InterfaceController session = new InterfaceController(parcel.getUser(), parcel);
                     session.updateDelivered();
                 }
                 break;
             case FAILED_DELIVERY:
                 if (parcel.hasUser()) {
-                    UserSession session = new UserSession(parcel.getUser(), parcel);
+                    InterfaceController session = new InterfaceController(parcel.getUser(), parcel);
                     session.updateFailure();
                 }
         }
@@ -59,12 +66,12 @@ public class UserNotifier {
     }
 
     /**
-     * Update the users still waiting for their package
+     * Update the users still waiting for their parcel
      */
     private void notifyAllUsersOnTour(List<Parcel> loadedParcels) {
         for (Parcel parcel : loadedParcels) {
             if (parcel.hasUser()) {
-                UserSession session = new UserSession(parcel.getUser(), parcel);
+                InterfaceController session = new InterfaceController(parcel.getUser(), parcel);
                 session.updateArrivalTime();
                 session.updateVanLocation();
             }

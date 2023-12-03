@@ -9,6 +9,7 @@
 - Javadoc vorhanden
 - Variabelnnamen sprechend ("userRepository" statt "ur")
 - Keine magic numbers verwenden, wenn Konstanten benötigt werden mit static final definieren
+- Lokale Variablen dort deklarieren wo sie benutzt werden
 
 ## 2. Bei Commit
 ### IDE Code Analysis laufen lassen und Warnungen beheben:
@@ -20,7 +21,8 @@
 - Unvollständiger und nicht genutzter Code löschen oder mit TODO annotieren
 - Code nach Regeln formatieren 
 - Klassen auf sich wiederholenden Code überprüfen und evtl. abstrahieren 
-
+- Ist Code DRY?
+- Unnötige console logs entfernen
 
 
 ## 3. Vor jedem Release

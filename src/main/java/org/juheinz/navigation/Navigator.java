@@ -1,11 +1,13 @@
 package org.juheinz.navigation;
 
+/**
+ * Displays route information on navigation system in delivery van.
+ */
 public class Navigator {
 
     private static final Navigator NAVIGATOR = new Navigator();
 
     private Navigator() {
-        System.out.println("Navigator Singleton created");
     }
 
     public static Navigator getInstance() {

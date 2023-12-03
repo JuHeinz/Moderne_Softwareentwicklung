@@ -17,26 +17,25 @@ public class Main {
         Navigator navigator = Navigator.getInstance();
         RouteService routeService = RouteService.getInstance(navigator);
 
-        // set up user repository
         UserRepository userRepository = UserRepository.getInstance();
         userRepository.connectToDatabse("0908-07.appusers.de", "user");
 
         UserNotifier userNotifier = UserNotifier.getInstance(userRepository);
 
-        // set up package repository
         ParcelRepository parcelRepository = ParcelRepository.getInstance(userNotifier);
         parcelRepository.connectToDatabse("012-34.packages.de", "package");
 
         ParcelManager parcelManager = ParcelManager.getInstance(parcelRepository, routeService);
         ParcelScanner parcelScanner = ParcelScanner.getInstance(parcelManager);
 
-        // simulate device activity
+        // simulate scanner activity
+        System.out.println("VAN BEING LOADED");
         int[] parcelCode = new int[]{8, 7, 6, 5, 4, 3, 1};
         for (int code : parcelCode) {
             parcelScanner.scanParcelAsLoaded(code, LocalDateTime.now());
             Thread.sleep(1000);
         }
-        System.out.println("Ich fahr los!");
+        System.out.println("VAN IS ROLLING OUT");
         Thread.sleep(2000);
         for (int code : parcelCode) {
             parcelScanner.scanParcelAsDelivered(code, LocalDateTime.now());

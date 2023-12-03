@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Keeps track of the deliveryPersons current location and provides optimized route after each successful delivery
+ * Provides optimized route.
  */
 public class RouteService {
     private int calculatedRoute;
@@ -18,7 +18,6 @@ public class RouteService {
     private Navigator navigator;
 
     private RouteService() {
-        System.out.println("RouteService Singleton created");
     }
 
     public static RouteService getInstance(Navigator navigator) {
@@ -32,7 +31,7 @@ public class RouteService {
 
     public void recalculateRoute() {
         int currentLocation = GPS.getCurrentLocation();
-        // Imagine fancy algorithm
+        //TODO: implement route calculation
         this.calculatedRoute = currentLocation + 1;
     }
 

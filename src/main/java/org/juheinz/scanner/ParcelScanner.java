@@ -9,6 +9,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+/**
+ * Software on handheld scanner with delivery person. Updates a parcels status when barcode is scanned.
+ */
 public class ParcelScanner {
     private ParcelManager parcelManager;
 
@@ -17,7 +20,6 @@ public class ParcelScanner {
     private static final ParcelScanner PARCEL_SCANNER = new ParcelScanner();
 
     private ParcelScanner() {
-        System.out.println("ParcelScanner Singleton created");
     }
 
     public static ParcelScanner getInstance(ParcelManager pm) {
@@ -50,12 +52,12 @@ public class ParcelScanner {
         }
     }
 
-    private void locallySaveLoadedParcel(Parcel p) {
-        loadedParcels.add(p);
+    private void locallySaveLoadedParcel(Parcel parcel) {
+        loadedParcels.add(parcel);
     }
 
     private static Parcel findByCode(Collection<Parcel> list, int code) {
-        return list.stream().filter(p -> (code == p.getId())).findFirst().orElse(null);
+        return list.stream().filter(parcel -> (code == parcel.getId())).findFirst().orElse(null);
     }
 
     private void showNotification(String message) {

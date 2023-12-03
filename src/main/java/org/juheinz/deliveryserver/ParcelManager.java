@@ -6,6 +6,9 @@ import org.juheinz.entities.Status;
 
 import java.time.LocalDateTime;
 
+/**
+ * Receives updates on the parcel status and updates the parcel repository as well as the route service.
+ */
 public class ParcelManager {
 
     private ParcelRepository parcelRepository;
@@ -15,7 +18,6 @@ public class ParcelManager {
     private static final ParcelManager parcelManager = new ParcelManager();
 
     private ParcelManager() {
-        System.out.println("ParcelManager Singleton created");
     }
 
     public static ParcelManager getInstance(ParcelRepository parcelRepository, RouteService routeService) {
@@ -26,7 +28,6 @@ public class ParcelManager {
     }
 
     public void setParcelLoaded(Parcel parcel, LocalDateTime timestamp) {
-        //Set package data
         parcel.setLoaded(true);
         parcel.setLoadedTime(timestamp);
         int destination = parcelRepository.getDestination(parcel);

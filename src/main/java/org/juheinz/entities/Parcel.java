@@ -3,6 +3,9 @@ package org.juheinz.entities;
 import java.time.LocalDateTime;
 
 
+/**
+ * A parcel entity.
+ */
 public class Parcel {
     private final int id;
     private LocalDateTime loadedTime;
@@ -38,16 +41,8 @@ public class Parcel {
         this.deliveredTime = deliveredTime;
     }
 
-    public boolean isLoaded() {
-        return isLoaded;
-    }
-
-    public void setLoaded(boolean loaded) {
+     public void setLoaded(boolean loaded) {
         isLoaded = loaded;
-    }
-
-    public boolean isDelivered() {
-        return isDelivered;
     }
 
     public void setDelivered(boolean delivered) {

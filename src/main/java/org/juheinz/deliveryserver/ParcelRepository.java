@@ -9,6 +9,9 @@ import org.juheinz.utility.AbstractRepository;
 import java.util.ArrayList;
 
 
+/**
+ * Provides read access to parcel database and sends updates to user notifier.
+ */
 public class ParcelRepository extends AbstractRepository<Parcel> {
 
     private UserNotifier userNotifier;
@@ -18,7 +21,6 @@ public class ParcelRepository extends AbstractRepository<Parcel> {
     private final ArrayList<Parcel> parcelsSetAsLoadedInDatabase = new ArrayList<>();
 
     private ParcelRepository() {
-        System.out.println("ParcelRepository Singleton created");
     }
 
     public static ParcelRepository getInstance(UserNotifier userNotifier) {
@@ -27,17 +29,14 @@ public class ParcelRepository extends AbstractRepository<Parcel> {
     }
 
 
-    public int getDestination(Parcel p) {
-        //SQL Goes here
+    public int getDestination(Parcel parcel) {
+        //TODO: Fake read from repository, return random number, display destinations in navi
         return 1;
     }
 
     /**
-     * after a package has been updated, this lets the application server know.
-     * the application server then checks if any of the packages are linked to app users
+     * notifies the userNotifier on package status
      */
-
-    //TODO: implement listender pattern
     public void updateParcelStatus(Parcel parcel, Status status) {
         switch (status) {
             case LOADED:
