@@ -4,18 +4,16 @@ package org.juheinz.deliveryserver;
 import org.juheinz.appserver.UserNotifier;
 import org.juheinz.entities.Package;
 import org.juheinz.entities.Status;
+import org.juheinz.utility.AbstractRepository;
 
 import java.util.ArrayList;
 
 
-/**
- * mock database and db management
- */
-public class PackageRepository {
+public class PackageRepository extends AbstractRepository<Package> {
 
     private UserNotifier userNotifier;
 
-    private static final PackageRepository pr = new PackageRepository();
+    private static final PackageRepository packageRepository = new PackageRepository();
 
     private final ArrayList<Package> packagesSetAsLoadedInDatabase = new ArrayList<>();
 
@@ -24,9 +22,10 @@ public class PackageRepository {
     }
 
     public static PackageRepository getInstance(UserNotifier userNotifier) {
-        pr.userNotifier = userNotifier;
-        return pr;
+        packageRepository.userNotifier = userNotifier;
+        return packageRepository;
     }
+
 
     public int getDestination(Package p) {
         //SQL Goes here

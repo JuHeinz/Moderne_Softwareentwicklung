@@ -2,14 +2,15 @@ package org.juheinz.appserver;
 
 import org.juheinz.entities.AppUser;
 import org.juheinz.entities.Package;
+import org.juheinz.utility.AbstractRepository;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class UserRepository {
+public class UserRepository extends AbstractRepository<AppUser> {
 
-    private static final UserRepository ur = new UserRepository();
+    private static final UserRepository userRepository = new UserRepository();
     private static final List<AppUser> allUsersInDB = new ArrayList<>();
 
     private UserRepository() {
@@ -17,20 +18,25 @@ public class UserRepository {
     }
 
     public static UserRepository getInstance() {
+
+        getAllFromDatabase();
+        return userRepository;
+    }
+
+    private static void getAllFromDatabase(){
         allUsersInDB.add(new AppUser(1));
         allUsersInDB.add(new AppUser(2));
         allUsersInDB.add(new AppUser(3));
         allUsersInDB.add(new AppUser(4));
         allUsersInDB.add(new AppUser(5));
-        return ur;
     }
 
     public AppUser getUserForPackage(Package p) {
         //let's pretend every package's id corresponds to the user id of the user that is waiting for it
-        return findByCode(allUsersInDB, p.getCode());
+        return findUserByPackageID(allUsersInDB, p.getCode());
     }
 
-    private AppUser findByCode(Collection<AppUser> list, int code) {
+    private AppUser findUserByPackageID(Collection<AppUser> list, int code) {
         return list.stream().filter(u -> (code == u.getUserID())).findFirst().orElse(null);
     }
 }
