@@ -1,13 +1,17 @@
 package org.juheinz.navigation;
 
+import org.juheinz.utility.Logger;
+
 /**
  * Displays route information on navigation system in delivery van.
  */
 public class Navigator {
 
     private static final Navigator NAVIGATOR = new Navigator();
+    private final Logger logger;
 
     private Navigator() {
+        this.logger = new Logger("navigator");
     }
 
     public static Navigator getInstance() {
@@ -15,12 +19,9 @@ public class Navigator {
     }
 
     public void setRoute(String route) {
-        showNotification("(to staff) Route was updated:" + route);
+        logger.log("Neues Ziel:" +  route, "zusteller");
     }
 
-    private void showNotification(String message) {
-        System.out.println(">> NAVIGATOR: " + message);
-    }
 
 
 }

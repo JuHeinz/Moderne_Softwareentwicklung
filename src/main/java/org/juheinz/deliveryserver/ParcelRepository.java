@@ -5,6 +5,7 @@ import org.juheinz.appserver.UserNotifier;
 import org.juheinz.entities.Parcel;
 import org.juheinz.entities.Status;
 import org.juheinz.utility.AbstractRepository;
+import org.juheinz.utility.Logger;
 
 import java.util.ArrayList;
 
@@ -20,7 +21,9 @@ public class ParcelRepository extends AbstractRepository<Parcel> {
 
     private final ArrayList<Parcel> parcelsSetAsLoadedInDatabase = new ArrayList<>();
 
+    private final Logger logger;
     private ParcelRepository() {
+        this.logger = new Logger("parcelrepositry");
     }
 
     public static ParcelRepository getInstance(UserNotifier userNotifier) {
@@ -41,21 +44,19 @@ public class ParcelRepository extends AbstractRepository<Parcel> {
         switch (status) {
             case LOADED:
                 parcelsSetAsLoadedInDatabase.add(parcel);
-                log("Parcel " + parcel.getId() + " set as loaded in database");
+                logger.log("Parcel " + parcel.getId() + " set as loaded in database", "admin");
                 break;
             case DELIVERED:
                 parcelsSetAsLoadedInDatabase.remove(parcel);
-                log("Parcel " + parcel.getId() + " set as delivered in database");
+                logger.log("Parcel " + parcel.getId() + " set as delivered in database","admin");
                 break;
             case FAILED_DELIVERY:
-                log("Parcel " + parcel.getId() + " has failed to deliver");
+                logger.log("Parcel " + parcel.getId() + " has failed to deliver", "admin");
                 break;
         }
         userNotifier.receiveUpdate(parcel, status, parcelsSetAsLoadedInDatabase);
     }
 
 
-    private void log(String message) {
-        System.out.println(">> PACKAGE REPOSITORY: " + message);
-    }
+
 }

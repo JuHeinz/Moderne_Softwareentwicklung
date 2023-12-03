@@ -3,6 +3,7 @@ package org.juheinz.scanner;
 import org.juheinz.deliveryserver.ParcelManager;
 import org.juheinz.entities.Parcel;
 import org.juheinz.navigation.GPS;
+import org.juheinz.utility.Logger;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -19,11 +20,13 @@ public class ParcelScanner {
 
     private static final ParcelScanner PARCEL_SCANNER = new ParcelScanner();
 
+    Logger logger;
     private ParcelScanner() {
+        this.logger = new Logger("scanner");
     }
 
-    public static ParcelScanner getInstance(ParcelManager pm) {
-        PARCEL_SCANNER.parcelManager = pm;
+    public static ParcelScanner getInstance(ParcelManager parcelManager) {
+        PARCEL_SCANNER.parcelManager = parcelManager;
         return PARCEL_SCANNER;
     }
 
@@ -31,7 +34,7 @@ public class ParcelScanner {
         Parcel parcel = new Parcel(scannedCode);
         parcelManager.setParcelLoaded(parcel, loadedTimeStamp);
         locallySaveLoadedParcel(parcel);
-        showNotification("Parcel " + parcel.getId() + " loaded.");
+        logger.log("Parcel " + parcel.getId() + " loaded.", "admin");
     }
 
     public void scanParcelAsDelivered(int scannedCode, LocalDateTime deliveredTimestamp) {
@@ -41,14 +44,14 @@ public class ParcelScanner {
             boolean validDelivery = DeliveryValidator.matchLocationDestination(deliveredParcel.getDestination(), GPS.getCurrentLocation());
             if (validDelivery) {
                 parcelManager.setParcelDelivered(deliveredParcel, deliveredTimestamp);
-                showNotification("(to staff) Zustellung von " + deliveredParcel + " erfolgreich!");
+                logger.log("Zustellung von " + deliveredParcel.getId() + " erfolgreich!", "zusteller");
                 loadedParcels.remove(deliveredParcel);
             } else {
                 parcelManager.setDeliveryFailure(deliveredParcel);
-                showNotification(" (to staff) Fehler bei Zustellung! Sie befinden sich nicht am richtigen Standort!");
+                logger.log("Fehler bei Zustellung! Sie befinden sich nicht am richtigen Standort!", "zusteller");
             }
         } else {
-            showNotification("(to staff) Für den Code " + scannedCode + " gibt es kein Paket in ihrem Wagen");
+            logger.log("Für den Code " + scannedCode + " gibt es kein Paket in ihrem Wagen", "zusteller");
         }
     }
 
@@ -60,7 +63,5 @@ public class ParcelScanner {
         return list.stream().filter(parcel -> (code == parcel.getId())).findFirst().orElse(null);
     }
 
-    private void showNotification(String message) {
-        System.out.println(">> PACKAGE SCANNER: " + message);
-    }
+
 }

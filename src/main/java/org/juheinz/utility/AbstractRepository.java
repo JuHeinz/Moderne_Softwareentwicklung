@@ -16,6 +16,8 @@ public abstract class AbstractRepository<T>{
 
     public void connectToDatabse(String urlSuffix, String entityName) {
         setFullURL(urlSuffix);
-        System.out.println("Connected " + entityName + " repository to database at " + fullURL);
+        String msg ="Connected to database at " + fullURL;
+        Logger logger = new Logger(entityName + "repository");
+        logger.log(msg, "admin");
     }
 }
