@@ -10,6 +10,13 @@ public class Parcel {
     private final int id;
     private LocalDateTime loadedTime;
     private LocalDateTime deliveredTime;
+
+    public boolean isLoaded() {
+        return isLoaded;
+    }
+
+
+
     private boolean isLoaded;
     private boolean isDelivered;
     private boolean hasAppUser;
@@ -42,11 +49,11 @@ public class Parcel {
     }
 
     public void setLoaded(boolean loaded) {
-        isLoaded = loaded;
+        this.isLoaded = loaded;
     }
 
     public void setDelivered(boolean delivered) {
-        isDelivered = delivered;
+        this.isDelivered = delivered;
     }
 
     public boolean hasUser() {
@@ -73,7 +80,8 @@ public class Parcel {
         this.destination = destination;
     }
 
-
-
+    public boolean isDelivered() {
+        return isDelivered;
+    }
 
 }

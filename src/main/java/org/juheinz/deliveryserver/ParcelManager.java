@@ -35,10 +35,12 @@ public class ParcelManager {
     }
 
     public void setParcelDelivered(Parcel parcel, LocalDateTime timestamp) {
-        parcel.setDelivered(true);
-        parcel.setDeliveredTime(timestamp);
-        parcelRepository.updateParcelStatus(parcel, Status.DELIVERED);
-        routeService.removeFromDestinations(parcel.getDestination());
+        if(parcel.isLoaded()){
+            parcel.setDelivered(true);
+            parcel.setDeliveredTime(timestamp);
+            parcelRepository.updateParcelStatus(parcel, Status.DELIVERED);
+            routeService.removeFromDestinations(parcel.getDestination());
+        }
     }
 
     public void setDeliveryFailure(Parcel parcel) {
