@@ -14,13 +14,11 @@ import java.util.List;
  * Software on handheld scanner with delivery person. Updates a parcels status when barcode is scanned.
  */
 public class ParcelScanner {
+    private static final ParcelScanner PARCEL_SCANNER = new ParcelScanner();
+    private final Logger logger;
+    private final List<Parcel> loadedParcels = new ArrayList<>();
     private ParcelManager parcelManager;
 
-    private final List<Parcel> loadedParcels = new ArrayList<>();
-
-    private static final ParcelScanner PARCEL_SCANNER = new ParcelScanner();
-
-    Logger logger;
     private ParcelScanner() {
         this.logger = new Logger("scanner");
     }
@@ -28,6 +26,10 @@ public class ParcelScanner {
     public static ParcelScanner getInstance(ParcelManager parcelManager) {
         PARCEL_SCANNER.parcelManager = parcelManager;
         return PARCEL_SCANNER;
+    }
+
+    private static Parcel findByCode(Collection<Parcel> list, int code) {
+        return list.stream().filter(parcel -> (code == parcel.getId())).findFirst().orElse(null);
     }
 
     public void scanParcelAsLoaded(int scannedCode, LocalDateTime loadedTimeStamp) {
@@ -57,10 +59,6 @@ public class ParcelScanner {
 
     private void locallySaveLoadedParcel(Parcel parcel) {
         loadedParcels.add(parcel);
-    }
-
-    private static Parcel findByCode(Collection<Parcel> list, int code) {
-        return list.stream().filter(parcel -> (code == parcel.getId())).findFirst().orElse(null);
     }
 
 

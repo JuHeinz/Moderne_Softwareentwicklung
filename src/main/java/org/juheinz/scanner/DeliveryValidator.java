@@ -5,10 +5,15 @@ package org.juheinz.scanner;
  */
 public class DeliveryValidator {
 
-    public static boolean matchLocationDestination(int currentLocation, int packageDestination) {
-        //fancy algorithm goes here
-        //simulate 20% failure rate
-        return currentLocation <= 8;
+    /**
+     * Currently just compares two randomly generated numbers
+     *
+     * @param currentLocation   of van
+     * @param parcelDestination recipient location
+     * @return boolean if destinations match
+     */
+    public static boolean matchLocationDestination(int currentLocation, int parcelDestination) {
+        return currentLocation >= parcelDestination;
     }
 
 

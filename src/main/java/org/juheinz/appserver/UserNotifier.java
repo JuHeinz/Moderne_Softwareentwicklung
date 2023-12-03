@@ -11,8 +11,8 @@ import java.util.List;
  */
 public class UserNotifier {
 
-    private UserRepository userRepository;
     private static final UserNotifier USER_NOTIFIER = new UserNotifier();
+    private UserRepository userRepository;
 
     private UserNotifier() {
     }
@@ -25,8 +25,9 @@ public class UserNotifier {
 
     /**
      * Creates UI according to packages status.
-     * @param parcel parcel entity that has changed.
-     * @param status status for parcel.
+     *
+     * @param parcel         parcel entity that has changed.
+     * @param status         status for parcel.
      * @param packagesOnTour all parcels still in the van.
      */
     public void receiveUpdate(Parcel parcel, Status status, ArrayList<Parcel> packagesOnTour) {

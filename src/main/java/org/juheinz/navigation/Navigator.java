@@ -2,6 +2,8 @@ package org.juheinz.navigation;
 
 import org.juheinz.utility.Logger;
 
+import java.util.List;
+
 /**
  * Displays route information on navigation system in delivery van.
  */
@@ -18,10 +20,9 @@ public class Navigator {
         return NAVIGATOR;
     }
 
-    public void setRoute(String route) {
-        logger.log("Neues Ziel:" +  route, "zusteller");
+    public void setRoute(List<Integer> route) {
+        logger.log("Neues Ziel:" + route, "zusteller");
     }
-
 
 
 }

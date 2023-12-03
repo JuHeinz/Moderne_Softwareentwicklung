@@ -41,7 +41,7 @@ public class Parcel {
         this.deliveredTime = deliveredTime;
     }
 
-     public void setLoaded(boolean loaded) {
+    public void setLoaded(boolean loaded) {
         isLoaded = loaded;
     }
 
@@ -65,18 +65,15 @@ public class Parcel {
         this.user = user;
     }
 
-    public void setDestination(int destination) {
-        this.destination = destination;
-    }
-
     public int getDestination() {
         return destination;
     }
 
-    @Override
-    public String toString() {
-        return "Parcel{" + "id=" + id + ", loadedTime=" + loadedTime + ", deliveredTime=" + deliveredTime + ", isLoaded=" + isLoaded + ", isDelivered=" + isDelivered + ", hasAppUser=" + hasAppUser + ", user=" + user + ", destination='" + destination + '\'' + '}';
+    public void setDestination(int destination) {
+        this.destination = destination;
     }
+
+
 
 
 }

@@ -1,20 +1,23 @@
 package org.juheinz.utility;
 
+/**
+ * Output of the application as logs. Formats messages from different classes for better readability.
+ */
 public class Logger {
 
     private final String sender;
 
-    public Logger(String tag){
+    public Logger(String tag) {
         this.sender = tag;
     }
 
-    public void log(String message, String receiver){
+    public void log(String message, String receiver) {
         String to = receiver;
         String from = sender;
-        String wrapStart ="";
+        String wrapStart = "";
         String wrapEnd = "";
 
-        switch(receiver){
+        switch (receiver) {
             case "meta":
                 wrapStart = "====== ";
                 wrapEnd = " ======";
@@ -23,7 +26,7 @@ public class Logger {
                 from = "";
                 break;
             case "user":
-                from ="";
+                from = "";
                 to = "";
                 wrapStart = "[USER NOTIFICATION]: ";
                 break;
@@ -35,9 +38,9 @@ public class Logger {
         }
 
         String adressBlock;
-        if(from.isEmpty() && to.isEmpty() ){
+        if (from.isEmpty() && to.isEmpty()) {
             adressBlock = "";
-        }else{
+        } else {
             adressBlock = "[" + from + " > " + to + "]: ";
         }
 

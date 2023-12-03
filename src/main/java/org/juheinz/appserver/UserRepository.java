@@ -5,7 +5,6 @@ import org.juheinz.entities.User;
 import org.juheinz.utility.AbstractRepository;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -24,7 +23,7 @@ public class UserRepository extends AbstractRepository<User> {
         return userRepository;
     }
 
-    private static void getAllUsersFromDatabase(){
+    private static void getAllUsersFromDatabase() {
         allUsersInDB.add(new User(1));
         allUsersInDB.add(new User(2));
         allUsersInDB.add(new User(3));
@@ -32,14 +31,9 @@ public class UserRepository extends AbstractRepository<User> {
         allUsersInDB.add(new User(5));
     }
 
-
-    //TODO: beide methods vereinen
     public User getUserForParcel(Parcel parcel) {
-        //let's pretend every package's id corresponds to the user id of the user that is waiting for it
-        return findUserByParcelID(allUsersInDB, parcel.getId());
+        //let's assume every parcels's id corresponds to the user id of the user that is waiting for it
+        return UserRepository.allUsersInDB.stream().filter(u -> (parcel.getId() == u.getId())).findFirst().orElse(null);
     }
 
-    private User findUserByParcelID(Collection<User> list, int id) {
-        return list.stream().filter(u -> (id == u.getId())).findFirst().orElse(null);
-    }
 }

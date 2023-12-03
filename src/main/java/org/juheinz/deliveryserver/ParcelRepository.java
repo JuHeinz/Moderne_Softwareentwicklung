@@ -15,13 +15,11 @@ import java.util.ArrayList;
  */
 public class ParcelRepository extends AbstractRepository<Parcel> {
 
+    private static final ParcelRepository PARCEL_REPOSITORY = new ParcelRepository();
+    private final ArrayList<Parcel> parcelsSetAsLoadedInDatabase = new ArrayList<>();
+    private final Logger logger;
     private UserNotifier userNotifier;
 
-    private static final ParcelRepository PARCEL_REPOSITORY = new ParcelRepository();
-
-    private final ArrayList<Parcel> parcelsSetAsLoadedInDatabase = new ArrayList<>();
-
-    private final Logger logger;
     private ParcelRepository() {
         this.logger = new Logger("parcelrepositry");
     }
@@ -33,8 +31,10 @@ public class ParcelRepository extends AbstractRepository<Parcel> {
 
 
     public int getDestination(Parcel parcel) {
-        //TODO: Fake read from repository, return random number, display destinations in navi
-        return 1;
+        //TODO: connect to actual database
+        int destination = (int) ((Math.random() * (10 - 1)) + 1);
+        parcel.setDestination(destination);
+        return destination;
     }
 
     /**
@@ -48,7 +48,7 @@ public class ParcelRepository extends AbstractRepository<Parcel> {
                 break;
             case DELIVERED:
                 parcelsSetAsLoadedInDatabase.remove(parcel);
-                logger.log("Parcel " + parcel.getId() + " set as delivered in database","admin");
+                logger.log("Parcel " + parcel.getId() + " set as delivered in database", "admin");
                 break;
             case FAILED_DELIVERY:
                 logger.log("Parcel " + parcel.getId() + " has failed to deliver", "admin");
@@ -56,7 +56,6 @@ public class ParcelRepository extends AbstractRepository<Parcel> {
         }
         userNotifier.receiveUpdate(parcel, status, parcelsSetAsLoadedInDatabase);
     }
-
 
 
 }

@@ -11,11 +11,9 @@ import java.time.LocalDateTime;
  */
 public class ParcelManager {
 
+    private static final ParcelManager parcelManager = new ParcelManager();
     private ParcelRepository parcelRepository;
     private RouteService routeService;
-
-
-    private static final ParcelManager parcelManager = new ParcelManager();
 
     private ParcelManager() {
     }
@@ -40,8 +38,7 @@ public class ParcelManager {
         parcel.setDelivered(true);
         parcel.setDeliveredTime(timestamp);
         parcelRepository.updateParcelStatus(parcel, Status.DELIVERED);
-        routeService.recalculateRoute();
-        routeService.sendRouteToNavigator();
+        routeService.removeFromDestinations(parcel.getDestination());
     }
 
     public void setDeliveryFailure(Parcel parcel) {

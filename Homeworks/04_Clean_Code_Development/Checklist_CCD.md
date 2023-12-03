@@ -30,5 +30,5 @@
 - Package names sinnvoll benannt, Klassen sinnvoll in Packages?
 - Dependency Check: Circular Dependencies? 
 - Noch nicht erledigte TODOs in Tickets fassen
-- 
+
 

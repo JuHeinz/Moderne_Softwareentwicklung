@@ -11,15 +11,14 @@ import java.time.LocalDateTime;
  */
 public class InterfaceController {
 
-    private final User user;
     private final Parcel parcel;
     private final UserInterface userInterface;
 
-  /** @param user the user for whom an interface is created
-    * @param parcel the parcel of the user
-   * */
+    /**
+     * @param user   the user for whom an interface is created
+     * @param parcel the parcel of the user
+     */
     public InterfaceController(User user, Parcel parcel) {
-        this.user = user;
         this.parcel = parcel;
         userInterface = new UserInterface(user);
     }
