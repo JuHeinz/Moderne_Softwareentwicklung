@@ -2,14 +2,14 @@ package org.juheinz.navigation;
 
 public class Navigator {
 
-    private static final Navigator ng = new Navigator();
+    private static final Navigator NAVIGATOR = new Navigator();
 
     private Navigator() {
         System.out.println("Navigator Singleton created");
     }
 
     public static Navigator getInstance() {
-        return ng;
+        return NAVIGATOR;
     }
 
     public void setRoute(String route) {

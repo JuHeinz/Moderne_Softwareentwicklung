@@ -1,47 +1,47 @@
 package org.juheinz.appserver;
 
-import org.juheinz.entities.AppUser;
-import org.juheinz.entities.Package;
-import org.juheinz.userapp.UI;
+import org.juheinz.entities.Parcel;
+import org.juheinz.entities.User;
+import org.juheinz.userapp.UserInterface;
 
 import java.time.LocalDateTime;
 
 public class UserSession {
 
-    private final AppUser user;
-    private final Package p;
-    private final UI ui;
+    private final User user;
+    private final Parcel parcel;
+    private final UserInterface userInterface;
 
-    public UserSession(AppUser user, Package p) {
+    public UserSession(User user, Parcel parcel) {
         this.user = user;
-        this.p = p;
-        log("New session for user: " + user.getUserID());
-        ui = new UI(p);
+        this.parcel = parcel;
+        log("New session for user: " + user.getId());
+        userInterface = new UserInterface(parcel);
     }
 
     public void updateLoaded() {
-        ui.sendNotification(user.getUserID() + " | Ihr Paket mit Nr. " + p.getCode() + " wurde um " + p.getLoadedTime() + " eingeladen.");
+        userInterface.sendNotification(user.getId() + " | Ihr Paket mit Nr. " + parcel.getId() + " wurde um " + parcel.getLoadedTime() + " eingeladen.");
     }
 
     public void updateFailure() {
-        ui.sendNotification(user.getUserID() + " | Ihr Paket mit Nr. " + p.getCode() + " konnte nicht zugestellt werden.");
+        userInterface.sendNotification(user.getId() + " | Ihr Paket mit Nr. " + parcel.getId() + " konnte nicht zugestellt werden.");
 
     }
 
     public void updateDelivered() {
-        ui.sendNotification(user.getUserID() + " | Ihr Paket mit Nr. " + p.getCode() + " wurde um " + p.getDeliveredTime() + " zugestellt.");
+        userInterface.sendNotification(user.getId() + " | Ihr Paket mit Nr. " + parcel.getId() + " wurde um " + parcel.getDeliveredTime() + " zugestellt.");
     }
 
     public void updateArrivalTime() {
         //fancy algorithm
         LocalDateTime arrivalTime = LocalDateTime.now();
-        ui.sendNotification(user.getUserID() + "| Änderung in Ankunftszeit für Ihr Paket mit Nr." + p.getCode() + " : " + arrivalTime);
+        userInterface.sendNotification(user.getId() + "| Änderung in Ankunftszeit für Ihr Paket mit Nr." + parcel.getId() + " : " + arrivalTime);
     }
 
     public void updateVanLocation() {
         //fancy algorithm
         String vanLocation = "000000";
-        ui.sendNotification(user.getUserID() + "| Das Fahrzeug mit ihrem Paket hat sich bewegt: " + vanLocation);
+        userInterface.sendNotification(user.getId() + "| Das Fahrzeug mit ihrem Paket hat sich bewegt: " + vanLocation);
     }
 
 

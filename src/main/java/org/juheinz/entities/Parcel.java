@@ -3,23 +3,23 @@ package org.juheinz.entities;
 import java.time.LocalDateTime;
 
 
-public class Package {
-    private final int code;
+public class Parcel {
+    private final int id;
     private LocalDateTime loadedTime;
     private LocalDateTime deliveredTime;
     private boolean isLoaded;
     private boolean isDelivered;
     private boolean hasAppUser;
-    private AppUser appUser;
+    private User user;
 
     private int destination;
 
-    public Package(int code) {
-        this.code = code;
+    public Parcel(int code) {
+        this.id = code;
     }
 
-    public int getCode() {
-        return code;
+    public int getId() {
+        return id;
     }
 
     public LocalDateTime getLoadedTime() {
@@ -54,20 +54,20 @@ public class Package {
         isDelivered = delivered;
     }
 
-    public boolean hasAppUser() {
+    public boolean hasUser() {
         return hasAppUser;
     }
 
-    public void setHasAppUser(boolean hasAppUser) {
-        this.hasAppUser = hasAppUser;
+    public void setHasUser(boolean hasUser) {
+        this.hasAppUser = hasUser;
     }
 
-    public AppUser getAppUser() {
-        return appUser;
+    public User getUser() {
+        return user;
     }
 
-    public void setAppUser(AppUser appUser) {
-        this.appUser = appUser;
+    public void setAppUser(User user) {
+        this.user = user;
     }
 
     public void setDestination(int destination) {
@@ -80,7 +80,7 @@ public class Package {
 
     @Override
     public String toString() {
-        return "Package{" + "code=" + code + ", loadedTime=" + loadedTime + ", deliveredTime=" + deliveredTime + ", isLoaded=" + isLoaded + ", isDelivered=" + isDelivered + ", hasAppUser=" + hasAppUser + ", appUser=" + appUser + ", destination='" + destination + '\'' + '}';
+        return "Parcel{" + "id=" + id + ", loadedTime=" + loadedTime + ", deliveredTime=" + deliveredTime + ", isLoaded=" + isLoaded + ", isDelivered=" + isDelivered + ", hasAppUser=" + hasAppUser + ", user=" + user + ", destination='" + destination + '\'' + '}';
     }
 
 
