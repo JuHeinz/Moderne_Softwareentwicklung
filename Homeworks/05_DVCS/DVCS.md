@@ -24,3 +24,6 @@
 ## Pull 
 (nach commit von Freund)
 ![img_7.png](img_7.png)
+
+## Merge
+![img_8.png](img_8.png)
