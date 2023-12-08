@@ -20,3 +20,7 @@
 
 ## Push
 ![img_6.png](img_6.png)
+
+## Pull 
+(nach commit von Freund)
+![img_7.png](img_7.png)
