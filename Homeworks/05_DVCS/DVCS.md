@@ -27,3 +27,9 @@
 
 ## Merge
 ![img_8.png](img_8.png)
+
+## Zeitreisen: Reset
+![img_9.png](img_9.png)
+
+## Zeitreisen: Restore
+![img_10.png](img_10.png)
