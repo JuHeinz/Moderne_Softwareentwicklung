@@ -27,7 +27,11 @@ in die pom.xml-File.
 Maven hat die Dependency dann automatisch als external library heruntergeladen.
 
 Meines Verständnis nach müsste ich die JAR File ohne Maven manuell herunterladen und dem classpath hinzufügen.
+
 ![img_3.png](img_3.png)
+
+Eine interessante Info ist der dependency tree `mvn dependency:tree`, wenn ein Projekt viele Dependencies hat, ist dies sicherlich sehr hilfreich. Ich werde das mal auf der Arbeit ausprobieren.
+![img_11.png](img_11.png)
 
 ## Testen 
 Da ich bisher keine Testerfahrung habe aber weiß, dass ich dies lernen sollte habe ich mir für diese Aufgabe die Basics
@@ -42,8 +46,8 @@ Mit `mvn test` konnte ich diese Test dann automatisch laufen lassen.
 Bisher habe ich Code noch nie gepackaged, da ich meine eigenen Programme immer nur aus dem IDE heraus laufen lasse
 und das das Teilen mit anderen über Link zum Source-Code repository stattfindet.
 
-Mit maven war diese Aufgabe aber sehr einfach und eine jar Datei war in Sekunden erstellt.
-Ich habe auch damit experimentiert den Wert für `<packaging>` von jar zu war zu verändern um zu sehen was passiert.
+Mit maven war diese Aufgabe aber via `mvn package` sehr einfach und eine jar Datei war in Sekunden erstellt.
+Ich habe auch damit experimentiert den Wert für `<packaging>` in `pom.xml` von jar zu war zu verändern um zu sehen was passiert.
 Zwischendurch habe ich das target directory leicht mit `mvn clean` löschen können. 
 
 ## Fazit
