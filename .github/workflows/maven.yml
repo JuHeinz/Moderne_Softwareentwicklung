@@ -30,7 +30,10 @@ jobs:
     - name: Build with Maven
       run: mvn package --file pom.xml
 
-    - name: Upload jar as build artefact
+    - name: make directory for upload of build artifact
+      run: mkdir staging && cp target/*.jar staging
+
+    - name: Upload jar as build artifact
       uses: actions/upload-artifact@v3
       with:
           name: Package
