@@ -30,6 +30,14 @@ jobs:
     - name: Build with Maven
       run: mvn package --file pom.xml
 
+    - name: Upload jar as build artefact
+      uses: actions/upload-artifact@v3
+      with:
+          name: Package
+          path: staging
+
     - name: Make dependency tree
       run: mvn dependency:tree
+
+
 
