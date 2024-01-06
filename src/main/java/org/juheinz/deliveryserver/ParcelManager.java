@@ -28,7 +28,7 @@ public class ParcelManager {
     public void setParcelLoaded(Parcel parcel, LocalDateTime timestamp) {
         parcel.setLoaded(true);
         parcel.setLoadedTime(timestamp);
-        int destination = parcelRepository.getDestination(parcel);
+        double[] destination = parcelRepository.getDestination(parcel);
         parcel.setDestination(destination);
         routeService.addToDestinations(destination);
         parcelRepository.updateParcelStatus(parcel, Status.LOADED);

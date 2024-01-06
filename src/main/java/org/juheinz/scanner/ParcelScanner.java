@@ -43,7 +43,7 @@ public class ParcelScanner {
         //get loaded parcel from earlier
         Parcel deliveredParcel = findByCode(loadedParcels, scannedCode);
         if (deliveredParcel != null) {
-            boolean validDelivery = DeliveryValidator.matchLocationDestination(deliveredParcel.getDestination(), GPS.getCurrentLocation());
+            boolean validDelivery = DeliveryValidator.matchLocationDestination(deliveredParcel.getDestination(), GPS.getCurrentLocation(), 30);
             if (validDelivery) {
                 parcelManager.setParcelDelivered(deliveredParcel, deliveredTimestamp);
                 logger.log("Zustellung von " + deliveredParcel.getId() + " erfolgreich!", "zusteller");

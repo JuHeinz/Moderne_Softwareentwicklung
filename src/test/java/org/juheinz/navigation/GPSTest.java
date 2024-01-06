@@ -6,13 +6,12 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class GPSTest {
     @Test
-    void returnsBetweenOneAndTen(){
-        int result = GPS.getCurrentLocation();
-        assertTrue(result >= 1 && result <= 10, "Generated number is out of range (1 to 10)");
+    void returnsBerlinCoordinates(){
+        double[] result = GPS.getCurrentLocation();
+            boolean latitudeCorrect = result[1] <= 52.8 && result[1] >= 52.2;
+            boolean longitudeCorrect = result[0] <= 14 && result[0] >= 12.9;
+        assertTrue(latitudeCorrect && longitudeCorrect, "Generated location is within Berlin");
     }
 
-    @Test
-    void returnsPositiveNumber(){
-        assertTrue(GPS.getCurrentLocation() > 0);
-    }
+
 }

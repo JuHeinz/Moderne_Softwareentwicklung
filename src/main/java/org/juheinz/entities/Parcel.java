@@ -11,18 +11,12 @@ public class Parcel {
     private LocalDateTime loadedTime;
     private LocalDateTime deliveredTime;
 
-    public boolean isLoaded() {
-        return isLoaded;
-    }
-
-
-
     private boolean isLoaded;
     private boolean isDelivered;
     private boolean hasAppUser;
     private User user;
 
-    private int destination;
+    private double[] destination;
 
     public Parcel(int code) {
         this.id = code;
@@ -72,16 +66,21 @@ public class Parcel {
         this.user = user;
     }
 
-    public int getDestination() {
+    public double[] getDestination() {
         return destination;
     }
 
-    public void setDestination(int destination) {
+    public void setDestination(double[] destination) {
         this.destination = destination;
     }
 
     public boolean isDelivered() {
         return isDelivered;
     }
+
+    public boolean isLoaded() {
+        return isLoaded;
+    }
+
 
 }

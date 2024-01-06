@@ -20,8 +20,12 @@ public class Navigator {
         return NAVIGATOR;
     }
 
-    public void setRoute(List<Integer> route) {
+    public void setRoute(List<double[]> route) {
         logger.log("Neues Ziel:" + route, "zusteller");
+    }
+
+    public void setDrivingInstruction(String drivingInstruction){
+        logger.log(drivingInstruction, "zusteller");
     }
 
 

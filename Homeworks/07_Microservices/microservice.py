@@ -2,38 +2,46 @@ from fastapi import FastAPI
 import math
 
 # SET UP API
-#create api object
+# create api object
 app = FastAPI()
 
-#create endpoint
+
+# create endpoint
 @app.get("/get-route/")
- #function that runs when route is accessed
-def get_route(latA: float, longA: float, latB: float, longB: float, ): #declare what data type fastAPI should expect
-    direction = calculateDirection(latA, longA, latB, longB)
-    distance = calculateDistance(latA, longA, latB, longB)                         
+# function that runs when route is accessed
+def get_route(latA: float, longA: float, latB: float, longB: float, ):  # declare what data type fastAPI should expect
+    direction = calculate_direction(latA, longA, latB, longB)
+    distance = calculate_distance(latA, longA, latB, longB)
 
     return {"direction": direction,
             "distance": distance}
 
 
-    
+@app.get("/get-distance/")
+def get_distance(latA: float, longA: float, latB: float, longB: float, ):
+    distance = calculate_distance(latA, longA, latB, longB)
+    return distance
+
+
 # SERVICE
-#calculate distance between two coordinates using the haversine formula
-def calculateDistance(latitudeA, longitudeA, latitudeB, longitudeB):
+# calculate distance between two coordinates using the haversine formula
+
+def calculate_distance(latitude_a, longitude_a, latitude_b, longitude_b):
     # Convert latitude and longitude from degrees to radians
-    latitudeA_radian = math.radians(latitudeA)
-    longitudeA_radian = math.radians(longitudeA)
-    latitudeB_radian = math.radians(latitudeB)
-    longitudeB_radian = math.radians(longitudeB)
+    latitude_a_radian = math.radians(latitude_a)
+    longitude_a_radian = math.radians(longitude_a)
+    latitude_b_radian = math.radians(latitude_b)
+    longitude_b_radian = math.radians(longitude_b)
 
     # Calculate the differences
-    deltaLatitude = latitudeB_radian - latitudeA_radian
-    deltaLongitude = longitudeB_radian - longitudeA_radian
+    delta_latitude = latitude_b_radian - latitude_a_radian
+    delta_longitude = longitude_b_radian - longitude_a_radian
 
     # Haversine formula
-    a = math.sin(deltaLatitude / 2)**2 + math.cos(latitudeA_radian) * math.cos(latitudeB_radian) * math.sin(deltaLongitude / 2)**2
+    a = math.sin(delta_latitude / 2) ** 2 + math.cos(latitude_a_radian) * math.cos(latitude_b_radian) * math.sin(
+        delta_longitude / 2) ** 2
     c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
-    
+
     # earth radius
     R = 6371.0
 
@@ -42,13 +50,14 @@ def calculateDistance(latitudeA, longitudeA, latitudeB, longitudeB):
 
     return distance
 
-# calculate direction on compass from coordinate A to B    
-def calculateDirection(latitudeA, longitudeA, latitudeB, longitudeB):
+
+# calculate direction on compass from coordinate A to B
+def calculate_direction(latitude_a, longitude_a, latitude_b, longitude_b):
     # Convert latitude and longitude from degrees to radians
-    lat1_rad = math.radians(latitudeA)
-    lon1_rad = math.radians(longitudeA)
-    lat2_rad = math.radians(latitudeB)
-    lon2_rad = math.radians(longitudeB)
+    lat1_rad = math.radians(latitude_a)
+    lon1_rad = math.radians(longitude_a)
+    lat2_rad = math.radians(latitude_b)
+    lon2_rad = math.radians(longitude_b)
 
     # Calculate differences in longitude and latitude
     dlon = lon2_rad - lon1_rad
@@ -63,4 +72,3 @@ def calculateDirection(latitudeA, longitudeA, latitudeB, longitudeB):
     direction = (direction + 360) % 360
 
     return direction
-

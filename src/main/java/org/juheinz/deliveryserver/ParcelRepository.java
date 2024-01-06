@@ -6,6 +6,7 @@ import org.juheinz.entities.Parcel;
 import org.juheinz.entities.Status;
 import org.juheinz.utility.AbstractRepository;
 import org.juheinz.utility.Logger;
+import org.juheinz.utility.RandomDataGenerator;
 
 import java.util.ArrayList;
 
@@ -30,9 +31,9 @@ public class ParcelRepository extends AbstractRepository<Parcel> {
     }
 
 
-    public int getDestination(Parcel parcel) {
+    public double[] getDestination(Parcel parcel) {
         //TODO: connect to actual database
-        int destination = (int) ((Math.random() * (10 - 1)) + 1);
+        double[] destination = RandomDataGenerator.generateRandomCoordinate();
         parcel.setDestination(destination);
         return destination;
     }
