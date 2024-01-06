@@ -13,6 +13,9 @@ public class NavigationProvider {
 
     static HttpResponse<String> response;
 
+    /**
+     * Returns an instruction on how to get from coordinateA to coordinateB
+     */
     public static String getRoute(double[] coordinateA, double[] coordinateB){
         String query = "get-route/?latA="+coordinateA[0]+"&longA="+coordinateA[1]+"&latB="+coordinateB[0]+"&longB="+coordinateB[1];
         HttpRequest request = createRequest(query);
@@ -22,10 +25,14 @@ public class NavigationProvider {
         JSONObject jsonObject = new JSONObject(response.body());
         double direction = jsonObject.getDouble("direction");
         double distance = jsonObject.getDouble("distance");
-        return "Fahre " + String.format("%.2f", distance) + "km lang in Kompassrichtung " + String.format("%.4f", direction) + "°";
+        return "Bewege dich " + String.format("%.2f", distance) + " km lang in Kompassrichtung " + String.format("%.4f", direction) + "°.";
     }
 
 
+    /**
+     * Returns distance between two coordinates
+     * @return distance in km.
+     */
     public static Double getDistance(double[] coordinateA, double[] coordinateB){
         String query = "get-distance/?latA="+coordinateA[0]+"&longA="+coordinateA[1]+"&latB="+coordinateB[0]+"&longB="+coordinateB[1];
         HttpRequest request = createRequest(query);
@@ -33,25 +40,27 @@ public class NavigationProvider {
         return Double.valueOf(response.body());
     }
 
+    /**
+     * create request for API for navigation microservice
+     * @param query requested endpoint and query parameters
+     */
     private static HttpRequest createRequest(String query){
-        //build request to API
-        HttpRequest request = HttpRequest.newBuilder()
+        return HttpRequest.newBuilder()
                 .uri(URI.create("http://127.0.0.1:8000/" + query))
                 .method("GET", HttpRequest.BodyPublishers.noBody())
                 .build();
-
-        return request;
     }
 
-    private static HttpResponse sendRequest(HttpRequest request){
-        // send request to api
-        try {
-            response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
+    /**
+     * Send request to API for navigation microservice
+     */
+    private static HttpResponse<String> sendRequest(HttpRequest request){
+        try (HttpClient client = HttpClient.newHttpClient()){
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }
-        System.out.println(response.body());
-        return  response;
+        return response;
     }
 
 }

@@ -21,7 +21,7 @@ public class Navigator {
     }
 
     public void setRoute(List<double[]> route) {
-        logger.log("Neues Ziel:" + route, "zusteller");
+        logger.log("Stops auf Route: " + route.size(), "zusteller");
     }
 
     public void setDrivingInstruction(String drivingInstruction){

@@ -7,6 +7,7 @@ import org.juheinz.utility.Logger;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
@@ -43,14 +44,18 @@ public class ParcelScanner {
         //get loaded parcel from earlier
         Parcel deliveredParcel = findByCode(loadedParcels, scannedCode);
         if (deliveredParcel != null) {
-            boolean validDelivery = DeliveryValidator.matchLocationDestination(deliveredParcel.getDestination(), GPS.getCurrentLocation(), 30);
+            // validate if delivery is correct
+            double[] parcelDestination = deliveredParcel.getDestination();
+            double[] currentLocation = GPS.getCurrentLocation();
+            boolean validDelivery = DeliveryValidator.matchLocationDestination(currentLocation, parcelDestination, 70);
+            double distance = DeliveryValidator.getDistance(currentLocation, parcelDestination);
             if (validDelivery) {
                 parcelManager.setParcelDelivered(deliveredParcel, deliveredTimestamp);
                 logger.log("Zustellung von " + deliveredParcel.getId() + " erfolgreich!", "zusteller");
                 loadedParcels.remove(deliveredParcel);
             } else {
                 parcelManager.setDeliveryFailure(deliveredParcel);
-                logger.log("Fehler bei Zustellung! Sie befinden sich nicht am richtigen Standort!", "zusteller");
+                logger.log("Fehler bei Zustellung! Sie befinden sich " + distance + "km von der Zieladresse. Soll: " + Arrays.toString(parcelDestination) + " Ist: " + Arrays.toString(currentLocation), "zusteller");
             }
         } else {
             logger.log("Für den Code " + scannedCode + " gibt es kein Paket in ihrem Wagen", "zusteller");

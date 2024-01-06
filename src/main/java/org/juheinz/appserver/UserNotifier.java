@@ -73,8 +73,7 @@ public class UserNotifier {
         for (Parcel parcel : loadedParcels) {
             if (parcel.hasUser()) {
                 InterfaceController session = new InterfaceController(parcel.getUser(), parcel);
-                session.updateArrivalTime();
-                session.updateVanLocation();
+                session.updateTrackingInformation();
             }
         }
     }

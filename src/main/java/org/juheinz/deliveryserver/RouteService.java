@@ -41,9 +41,12 @@ public class RouteService {
 
     public void recalculateRoute() {
         navigator.setRoute(destinations);
+        if(!destinations.isEmpty()){
+            double[] nextDesination = destinations.get(0);
+            String drivingInstruction = NavigationProvider.getRoute(nextDesination, GPS.getCurrentLocation());
+            navigator.setDrivingInstruction(drivingInstruction);
+        }
 
-        String drivingInstruction = NavigationProvider.getRoute(destinations.get(0), GPS.getCurrentLocation());
-        navigator.setDrivingInstruction(drivingInstruction);
     }
 
 

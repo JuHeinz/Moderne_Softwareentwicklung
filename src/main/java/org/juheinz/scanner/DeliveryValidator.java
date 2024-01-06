@@ -18,13 +18,12 @@ public class DeliveryValidator {
      * @return boolean if destinations are within range of each other
      */
     public static boolean matchLocationDestination(double[] currentLocation, double[] parcelDestination, int maximumRange) {
-
-        Double distance = NavigationProvider.getDistance(currentLocation,parcelDestination);
-        System.out.println("Current Location is + " + currentLocation[0] + "/" +currentLocation[1]);
-        System.out.println("Destination is + " + parcelDestination[0] + "/" +parcelDestination[1]);
-        System.out.println("Distance is " + distance);
+        double distance = getDistance(currentLocation, parcelDestination);
         return distance < maximumRange;
+    }
 
+    public static double getDistance(double[] currentLocation, double[] parcelDestination){
+        return NavigationProvider.getDistance(currentLocation,parcelDestination);
     }
 
 
