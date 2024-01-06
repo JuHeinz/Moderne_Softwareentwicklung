@@ -1,11 +1,22 @@
 package org.juheinz.main;
 
 
-public class Main {
-    public static void main(String[] args) throws InterruptedException {
+import org.juheinz.navigation.RouteProvider;
+import org.juheinz.utility.RandomDataGenerator;
 
-       DeliverySimulator deliverySimulator = new DeliverySimulator();
-       deliverySimulator.startSimulation();
+public class Main {
+    public static void main(String[] args) {
+
+        double[] a = RandomDataGenerator.generateRandomCoordinate();
+        double[] b = RandomDataGenerator.generateRandomCoordinate();
+
+        System.out.println(a[0] +" " + a[1]);
+        System.out.println(b[0] +" " + b[1]);
+
+        RouteProvider.getRoute(a, b);
+
+       //DeliverySimulator deliverySimulator = new DeliverySimulator();
+       //deliverySimulator.startSimulation();
 
     }
 }
