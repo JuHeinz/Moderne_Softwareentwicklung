@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
 public class DeliverySimulator {
     Logger logger;
 
-    public void startSimulation() throws InterruptedException {
+    public void startSimulation(){
         Navigator navigator = Navigator.getInstance();
         RouteService routeService = RouteService.getInstance(navigator);
 
@@ -42,13 +42,11 @@ public class DeliverySimulator {
         int[] parcelCode = new int[]{8, 7, 6, 5, 4, 3, 1};
         for (int code : parcelCode) {
             parcelScanner.scanParcelAsLoaded(code, LocalDateTime.now());
-            Thread.sleep(1000);
         }
         logger.log("van is rolling out", "meta");
-        Thread.sleep(2000);
+
         for (int code : parcelCode) {
             parcelScanner.scanParcelAsDelivered(code, LocalDateTime.now());
-            Thread.sleep(1000);
         }
     }
 

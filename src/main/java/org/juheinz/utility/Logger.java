@@ -1,9 +1,16 @@
 package org.juheinz.utility;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.time.LocalTime;
+
 /**
  * Output of the application as logs. Formats messages from different classes for better readability.
  */
-public class Logger {
+public class Logger{
+    String filePath = "./output/log-";
 
     private final String sender;
 
@@ -24,6 +31,7 @@ public class Logger {
                 message = message.toUpperCase();
                 to = "";
                 from = "";
+                receiver = "admin";
                 break;
             case "user":
                 from = "";
@@ -45,7 +53,19 @@ public class Logger {
         }
 
         String output = wrapStart + adressBlock + message + wrapEnd;
-        System.out.println(output);
+        writeToFile(output, receiver);
+    }
+
+    public void writeToFile(String input,String receiver){
+
+        try(FileWriter fileWriter = new FileWriter(filePath + receiver + ".txt", true);
+            BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+            PrintWriter printWriter = new PrintWriter(bufferedWriter))
+        {
+            printWriter.println(LocalTime.now() + ": " + input);
+        } catch (IOException e) {
+            throw new RuntimeException();
+        }
     }
 
 }
