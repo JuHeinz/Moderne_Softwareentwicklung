@@ -5,9 +5,10 @@ import org.juheinz.appserver.UserRepository;
 import org.juheinz.deliveryserver.ParcelManager;
 import org.juheinz.deliveryserver.ParcelRepository;
 import org.juheinz.deliveryserver.RouteService;
+import org.juheinz.entities.StaffDeployment;
 import org.juheinz.navigation.Navigator;
 import org.juheinz.scanner.ParcelScanner;
-import org.juheinz.entities.StaffDeployment;
+import org.juheinz.scanner.StaffDslListener;
 import org.juheinz.utility.Logger;
 
 import java.time.LocalDateTime;
@@ -17,8 +18,10 @@ import java.time.LocalDateTime;
  */
 public class DeliverySimulator {
     Logger logger;
+    StaffDeployment staffDeployment;
 
-    public void startSimulation(){
+    public void startSimulation() {
+        //instanciate all singletons
         Navigator navigator = Navigator.getInstance();
         RouteService routeService = RouteService.getInstance(navigator);
 
@@ -32,12 +35,16 @@ public class DeliverySimulator {
 
         ParcelManager parcelManager = ParcelManager.getInstance(parcelRepository, routeService);
         ParcelScanner parcelScanner = ParcelScanner.getInstance(parcelManager);
-        logger = new Logger("main");
 
+        //set staff on route
+        logger = new Logger("main");
         setStaffDeployment();
 
+        //simulate DSL input for staff
+        StaffDslListener staffDslListener = new StaffDslListener();
+        staffDslListener.listenToStaff(staffDeployment.getStaffName());
 
-        // simulate scanner activity
+        //simulate scanner activity
         logger.log("van is being loaded", "meta");
         int[] parcelCode = new int[]{8, 7, 6, 5, 4, 3, 1};
         for (int code : parcelCode) {
@@ -53,9 +60,9 @@ public class DeliverySimulator {
     /**
      * Example for an interal Domain Specific Language (DSL).
      */
-    private void setStaffDeployment(){
-        StaffDeployment staffDeployment = new StaffDeployment(1,2,3);
-        staffDeployment.weatherCondition("sonnig").fuelPercentage(98).staffStatus("gesund");
+    private void setStaffDeployment() {
+        staffDeployment = new StaffDeployment(1, 2, 3);
+        staffDeployment.weatherCondition("sonnig").fuelPercentage(98).staffStatus("gesund").staffName("Johnny");
         logger.log(staffDeployment.toString(), "admin");
     }
 

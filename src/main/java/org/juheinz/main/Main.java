@@ -1,10 +1,10 @@
 package org.juheinz.main;
 
 public class Main {
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) {
 
-       DeliverySimulator deliverySimulator = new DeliverySimulator();
-       deliverySimulator.startSimulation();
+        DeliverySimulator deliverySimulator = new DeliverySimulator();
+        deliverySimulator.startSimulation();
 
 
     }

@@ -5,12 +5,13 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.time.LocalTime;
+import java.util.Objects;
 
 /**
  * Output of the application as logs. Formats messages from different classes for better readability.
  */
-public class Logger{
-    String filePath = "./output/log-";
+public class Logger {
+    final String filePath = "./output/log-";
 
     private final String sender;
 
@@ -53,15 +54,22 @@ public class Logger{
         }
 
         String output = wrapStart + adressBlock + message + wrapEnd;
-        writeToFile(output, receiver);
+        if (Objects.equals(this.sender, "staffDSL") || Objects.equals(this.sender, "staffInput")) {
+            System.out.println(output);
+        } else {
+            writeToFile(output, receiver);
+        }
+
     }
 
-    public void writeToFile(String input,String receiver){
+    /**
+     * Write a log of all activities. See output folder.
+     */
+    public void writeToFile(String input, String receiver) {
 
-        try(FileWriter fileWriter = new FileWriter(filePath + receiver + ".txt", true);
-            BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
-            PrintWriter printWriter = new PrintWriter(bufferedWriter))
-        {
+        try (FileWriter fileWriter = new FileWriter(filePath + receiver + ".txt", true);
+             BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+             PrintWriter printWriter = new PrintWriter(bufferedWriter)) {
             printWriter.println(LocalTime.now() + ": " + input);
         } catch (IOException e) {
             throw new RuntimeException();
