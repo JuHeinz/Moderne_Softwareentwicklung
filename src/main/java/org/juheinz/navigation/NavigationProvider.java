@@ -19,13 +19,19 @@ public class NavigationProvider {
     public static String getRoute(double[] coordinateA, double[] coordinateB){
         String query = "get-route/?latA="+coordinateA[0]+"&longA="+coordinateA[1]+"&latB="+coordinateB[0]+"&longB="+coordinateB[1];
         HttpRequest request = createRequest(query);
-        response = sendRequest(request);
+        try{
+            response = sendRequest(request);
 
-        // Extract direction and distance from the response
-        JSONObject jsonObject = new JSONObject(response.body());
-        double direction = jsonObject.getDouble("direction");
-        double distance = jsonObject.getDouble("distance");
-        return "Bewege dich " + String.format("%.2f", distance) + " km lang in Kompassrichtung " + String.format("%.4f", direction) + "°.";
+            // Extract direction and distance from the response
+            JSONObject jsonObject = new JSONObject(response.body());
+            double direction = jsonObject.getDouble("direction");
+            double distance = jsonObject.getDouble("distance");
+            return "Bewege dich " + String.format("%.2f", distance) + " km lang in Kompassrichtung " + String.format("%.4f", direction) + "°.";
+        }catch (RuntimeException e){
+            return "Keine Verbindung zum Navigations Microservice möglich. Ist der Server an?";
+        }
+
+
     }
 
 
@@ -36,8 +42,12 @@ public class NavigationProvider {
     public static Double getDistance(double[] coordinateA, double[] coordinateB){
         String query = "get-distance/?latA="+coordinateA[0]+"&longA="+coordinateA[1]+"&latB="+coordinateB[0]+"&longB="+coordinateB[1];
         HttpRequest request = createRequest(query);
+        try{
         response = sendRequest(request);
-        return Double.valueOf(response.body());
+        return Double.valueOf(response.body());}
+        catch (RuntimeException e){
+            return 0.0;
+        }
     }
 
     /**
